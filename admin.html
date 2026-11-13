@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Portfolio editor | Angelica M. Junio</title>
+<link rel="stylesheet" href="editor.css">
+<script src="editor.js" defer></script>
+</head>
+<body>
+<header>
+  <a class="brand" href="./"><span>AJ</span> Angelica’s portfolio editor</a>
+  <a href="./" target="_blank" rel="noopener">View public site ↗</a>
+</header>
+<main>
+  <section class="toolbar" aria-label="Publishing controls">
+    <div><h1>Edit your portfolio</h1><p>Choose <strong>Edit</strong> beside any text in the preview, or replace the profile photo.</p></div>
+    <div class="actions">
+      <button id="choose-photo" class="button secondary" disabled>Choose photo</button>
+      <input id="photo" type="file" accept="image/jpeg,image/png,image/webp" hidden disabled>
+      <button id="remove-photo" class="button secondary" hidden>Remove photo</button>
+      <button id="publish" class="button" disabled>Publish updates</button>
+    </div>
+    <p id="status" role="status">Loading the portfolio…</p>
+  </section>
+  <iframe id="preview" title="Editable portfolio preview" sandbox="allow-same-origin"></iframe>
+</main>
+<dialog id="text-editor">
+  <form id="edit-text">
+    <h2>Edit text</h2>
+    <label for="text-value">Text on the portfolio</label>
+    <textarea id="text-value" rows="5" maxlength="1800" required></textarea>
+    <div class="actions">
+      <button id="cancel-text" class="button secondary" type="button">Cancel</button>
+      <button class="button" type="submit">Apply to preview</button>
+    </div>
+  </form>
+</dialog>
+<dialog id="access">
+  <form id="authorize">
+    <h2>Publish to GitHub</h2>
+    <p>Enter your portfolio access key. GitHub uses it to save changes to the public site.</p>
+    <label for="token">Portfolio access key</label>
+    <input id="token" type="password" autocomplete="off" required>
+    <p class="hint">The editor keeps this key only while this tab stays open.</p>
+    <p id="auth-status" role="status"></p>
+    <div class="actions">
+      <button id="cancel" class="button secondary" type="button">Cancel</button>
+      <button id="confirm" class="button" type="submit">Publish updates</button>
+    </div>
+  </form>
+</dialog>
+</body>
+</html>
+
