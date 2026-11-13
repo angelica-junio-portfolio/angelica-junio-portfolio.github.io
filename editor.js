@@ -283,7 +283,8 @@ let projectIndex = null;
 const galleryStyles = `
   .project-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:1.25rem; margin-top:1.6rem; }
   .project-card { display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:0 4px 14px #1639750b; }
-  .project-image { width:100%; aspect-ratio:4/3; object-fit:contain; background:#eef4ff; display:block; }
+  .project-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,145px),1fr)); gap:.55rem; padding:.75rem; }
+  .project-image { width:100%; aspect-ratio:4/3; object-fit:contain; background:#eef4ff; display:block; border-radius:8px; }
   .project-body { display:grid; align-content:start; gap:.6rem; flex:1; padding:1rem 1.15rem 1.2rem; }
   .project-body p { color:var(--muted); white-space:pre-line; overflow-wrap:anywhere; }
   .project-body a { justify-self:start; font-weight:700; }
@@ -302,10 +303,10 @@ function openProject(index = null) {
   el('project-name').value = card?.querySelector('h3')?.textContent || '';
   el('project-description').value = card?.querySelector('p')?.textContent || '';
   el('project-url').value = card?.querySelector('a')?.getAttribute('href') || '';
-  el('project-alt').value = card?.querySelector('img')?.getAttribute('alt') || '';
+  el('project-alt').value = (card?.querySelector('img')?.getAttribute('alt') || '').replace(/ — image \d+$/, '');
   el('image-hint').textContent = card?.querySelector('img')
-    ? 'Leave blank to keep the existing image, or choose a replacement.'
-    : 'JPG, PNG, or WebP, up to 12 MB.';
+    ? 'Leave blank to keep the existing photos, or select a new set to replace them.'
+    : 'Select one or more JPG, PNG, or WebP files, up to 12 MB each.';
   el('work-status').textContent = '';
   el('delete-work').hidden = !card;
   workDialog.showModal();
@@ -390,19 +391,30 @@ workForm.addEventListener('submit', async (event) => {
   el('save-work').disabled = true;
   el('work-status').textContent = '';
   try {
-    const file = projectImage.files[0];
-    const image = file ? await projectPhoto(file) : old?.querySelector('img')?.getAttribute('src');
+    const files = [...projectImage.files];
+    const images = [];
+    if (files.length) {
+      for (const file of files) images.push(await projectPhoto(file));
+    } else {
+      for (const image of old?.querySelectorAll('img') || []) images.push(image.getAttribute('src'));
+    }
     const card = page.createElement('article');
     card.className = 'project-card';
     const body = page.createElement('div');
     body.className = 'project-body';
-    if (image) {
-      const element = page.createElement('img');
-      element.className = 'project-image';
-      element.alt = el('project-alt').value.trim() || title;
-      element.loading = 'lazy';
-      element.src = image;
-      card.append(element);
+    if (images.length) {
+      const tiles = page.createElement('div');
+      tiles.className = 'project-photos';
+      for (const [index, src] of images.entries()) {
+        const element = page.createElement('img');
+        element.className = 'project-image';
+        const description = el('project-alt').value.trim() || title;
+        element.alt = images.length > 1 ? description + ' — image ' + (index + 1) : description;
+        element.loading = 'lazy';
+        element.src = src;
+        tiles.append(element);
+      }
+      card.append(tiles);
     }
     const heading = page.createElement('h3');
     heading.textContent = title;
@@ -443,4 +455,5 @@ async function loadLargePage() {
   return response.text();
 }
 load();
+
 

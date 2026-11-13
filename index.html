@@ -411,6 +411,17 @@ copyEmail.addEventListener('click', async () => {
 #selected-work .project-body { display:grid; gap:.65rem; padding:0; }
 #selected-work .project-body p { color:var(--muted); white-space:pre-line; overflow-wrap:anywhere; }
 #selected-work .project-body a { justify-self:start; font-weight:700; }
+#selected-work .project-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,135px),1fr)); gap:.6rem; }
+#selected-work .photo-tile { display:block; min-width:0; padding:0; border:1px solid var(--line); border-radius:9px; background:#eef4ff; cursor:zoom-in; overflow:hidden; }
+#selected-work .photo-tile img { display:block; width:100%; height:auto; aspect-ratio:4/3; object-fit:contain; }
+#project-lightbox { width:min(94vw,880px); max-height:92vh; padding:1rem; border:0; border-radius:14px; color:var(--ink); }
+#project-lightbox::backdrop { background:#101c36cc; }
+#project-lightbox img { display:block; max-width:100%; max-height:75vh; margin:.75rem auto 0; object-fit:contain; }
+@media(prefers-reduced-motion:no-preference) {
+  .photo-tile img { transition:transform 180ms ease; }
+  .photo-tile:is(:hover,:focus-visible) img { transform:scale(1.045); }
+  #project-lightbox[open] { animation:section-in 200ms ease both; }
+}
 #selected-work .section-note { color:var(--muted); margin-top:.75rem; }
 @media(prefers-reduced-motion:no-preference) {
   .project-summary { transition:background-color 160ms ease; }
@@ -450,8 +461,40 @@ copyEmail.addEventListener('click', async () => {
     panel.className = 'project-panel';
     heading.remove();
     panel.append(...card.children);
+    const photos = [...panel.querySelectorAll('img.project-image')];
+    if (photos.length) {
+      const tiles = panel.querySelector('.project-photos') || document.createElement('div');
+      tiles.className = 'project-photos';
+      panel.prepend(tiles);
+      for (const image of photos) {
+        const tile = document.createElement('button');
+        tile.type = 'button';
+        tile.className = 'photo-tile';
+        tile.setAttribute('aria-label', 'Enlarge ' + image.alt);
+        tile.addEventListener('click', () => showPhoto(image));
+        tile.append(image);
+        tiles.append(tile);
+      }
+    }
     disclosure.append(summary, panel);
     card.replaceWith(disclosure);
+  }
+  function showPhoto(image) {
+    let dialog = document.getElementById('project-lightbox');
+    if (!dialog) {
+      dialog = document.createElement('dialog');
+      dialog.id = 'project-lightbox';
+      dialog.setAttribute('aria-label', 'Enlarged project image');
+      dialog.innerHTML = '<form method="dialog"><button class="button secondary">Close image</button></form><img alt="">';
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+      document.body.append(dialog);
+    }
+    const full = dialog.querySelector('img');
+    full.src = image.src;
+    full.alt = image.alt;
+    dialog.showModal();
   }
   if (!('IntersectionObserver' in window) || !matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
   const observer = new IntersectionObserver((entries) => {
@@ -468,6 +511,7 @@ copyEmail.addEventListener('click', async () => {
 </script>
 </body>
 </html>
+
 
 
 
