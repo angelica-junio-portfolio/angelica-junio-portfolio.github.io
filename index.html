@@ -209,6 +209,11 @@ details[open] .detail-action .when-open { display: inline; }
   .reference dl { grid-template-columns: 1fr; gap: .15rem; }
   .reference dd + dt { margin-top: .5rem; }
 }
+.email-reveal { border: 0; }
+.email-address { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; margin-top: .7rem; }
+.email-address a { color: #fff; overflow-wrap: anywhere; }
+.email-address .button { min-height: 36px; padding: .25rem .75rem; font-size: .85rem; }
+.copy-status { color: #d8e6ff; font-size: .85rem; flex-basis: 100%; }
 </style>
 </head>
 <body>
@@ -315,7 +320,14 @@ details[open] .detail-action .when-open { display: inline; }
     <div class="section wrap contact-inner">
       <div><h2 id="contact-title">Let’s talk about your practice.</h2><p>Get in touch to discuss medical administration or billing support.</p></div>
       <div class="contact-options">
-        <a class="button" href="mailto:junicaangelo@gmail.com">Email Angelica <span aria-hidden="true">↗</span></a>
+        <details class="email-reveal">
+          <summary class="button">Email Angelica <span aria-hidden="true">↓</span></summary>
+          <div class="email-address">
+            <a href="mailto:majangelic@gmail.com">majangelic@gmail.com</a>
+            <button class="button" type="button" data-copy-email>Copy email</button>
+            <span class="copy-status" role="status"></span>
+          </div>
+        </details>
 
       </div>
     </div>
@@ -375,6 +387,17 @@ expandAll.addEventListener('click', () => {
 for (const role of workRoles) role.addEventListener('toggle', updateExpandAll);
 updateExpandAll();
 expandAll.hidden = false;
+const copyEmail = document.querySelector('[data-copy-email]');
+copyEmail.addEventListener('click', async () => {
+  const address = document.querySelector('.email-address a');
+  const status = document.querySelector('.copy-status');
+  try {
+    await navigator.clipboard.writeText(address.textContent.trim());
+    status.textContent = 'Email copied.';
+  } catch {
+    status.textContent = 'Select the email address to copy it.';
+  }
+});
 </script>
 </body>
 </html>
