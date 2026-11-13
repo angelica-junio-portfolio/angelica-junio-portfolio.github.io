@@ -130,8 +130,8 @@ photo.addEventListener('change', async () => {
   const file = photo.files[0];
   photo.value = '';
   if (!file) return;
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 12_000_000) {
-    el('status').textContent = 'Choose a JPG, PNG, or WebP photo under 12 MB.';
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+    el('status').textContent = 'Choose a JPG, PNG, or WebP photo.';
     return;
   }
   photoBusy = true;
@@ -306,7 +306,7 @@ function openProject(index = null) {
   el('project-alt').value = (card?.querySelector('img')?.getAttribute('alt') || '').replace(/ — image \d+$/, '');
   el('image-hint').textContent = card?.querySelector('img')
     ? 'Leave blank to keep the existing photos, or select a new set to replace them.'
-    : 'Select one or more JPG, PNG, or WebP files, up to 12 MB each.';
+    : 'Select one or more JPG, PNG, or WebP files.';
   el('work-status').textContent = '';
   el('delete-work').hidden = !card;
   workDialog.showModal();
@@ -335,8 +335,8 @@ function ensureGallery() {
 }
 
 async function projectPhoto(file) {
-  if (!['image/jpeg','image/png','image/webp'].includes(file.type) || file.size > 12_000_000) {
-    throw new Error('Choose a JPG, PNG, or WebP image under 12 MB.');
+  if (!['image/jpeg','image/png','image/webp'].includes(file.type)) {
+    throw new Error('Choose a JPG, PNG, or WebP image.');
   }
   const image = await createImageBitmap(file);
   try {
