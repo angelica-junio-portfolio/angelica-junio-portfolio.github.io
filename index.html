@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Angelica M. Junio’s portfolio in medical administration, billing, and technical support.">
+
+<title>Angelica M. Junio | Virtual Medical Receptionist</title>
+<style>
+:root{color-scheme:light;--ink:#172944;--muted:#465a72;--blue:#2452bb;--navy:#122b5d;--pale:#edf3ff;--line:#d7e2f0;--paper:#fff;--wide:1136px;--sans:"Instrument Sans","Segoe UI",sans-serif;--serif:"Instrument Serif",Georgia,serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:6rem}body{margin:0;background:#fafcff;color:var(--ink);font:1rem/1.65 var(--sans)}a{color:var(--blue);text-underline-offset:.25em}button,summary,a{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #3a6deb;outline-offset:5px}h1,h2,h3,p{margin:0}h1,h2{font-family:var(--serif);font-weight:400;line-height:1.03;letter-spacing:-.045em}h2{font-size:clamp(2.5rem,5vw,4.2rem)}h3{line-height:1.25;font-size:1.18rem}.wrap{width:min(var(--wide),calc(100% - 4rem));margin-inline:auto}.skip{position:fixed;z-index:5;left:1rem;top:-5rem;background:white;padding:.5rem 1rem}.skip:focus{top:.5rem}
+.header{position:sticky;top:0;z-index:3;background:#fafcff;border-bottom:1px solid var(--line)}.header-inner{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;min-height:74px}.brand{display:flex;gap:.8rem;align-items:center;text-decoration:none;color:var(--ink);font-weight:700;white-space:nowrap}.initials{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;font-size:.83rem;background:var(--navy);color:white;letter-spacing:.035em}.nav{display:flex;align-items:center;gap:clamp(.7rem,2.5vw,2rem);font-size:.91rem}.nav a{text-decoration:none;font-weight:600;color:var(--ink)}.nav a:hover{color:var(--blue)}.nav .nav-contact{color:var(--blue);border:1px solid #9eb8eb;border-radius:99px;padding:.4rem .9rem}.nav-toggle{display:none}
+.hero{background:#eaf1ff;border-bottom:1px solid #d6e2f7;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.3fr .85fr;gap:4.4rem;align-items:center;padding-block:clamp(3.5rem,7.5vw,6.5rem)}.eyebrow{font-size:.76rem;font-weight:750;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem}.hero h1{font-size:clamp(3.4rem,7.2vw,6.5rem);color:var(--navy);max-width:760px}.hero-copy{color:#344b6d;max-width:55ch;margin-top:1.35rem;font-size:1.12rem}.actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.7rem}.button{display:inline-flex;align-items:center;justify-content:center;gap:.65rem;min-height:46px;border:1px solid var(--blue);border-radius:99px;padding:.5rem 1.08rem;font:inherit;font-weight:650;text-decoration:none;cursor:pointer}.button.primary{background:var(--blue);color:white}.button.primary:hover{background:#193d94}.button.secondary{background:transparent;color:#173b88}.button.secondary:hover{background:#dce8ff}
+.hero-card{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;min-height:330px;border-radius:14px;padding:1.65rem 1.8rem;background:linear-gradient(145deg,#244fa7,#132e64 75%);color:#fff}.hero-card::before,.hero-card::after{content:"";position:absolute;z-index:-1;border:1px solid #c3d6ff50;border-radius:50%;width:365px;height:365px;top:-95px;right:-115px}.hero-card::after{width:300px;height:300px;top:-65px;right:-83px}.monogram{font:400 clamp(5rem,10vw,8.6rem)/1 var(--serif);letter-spacing:-.065em;color:#f1f5ff}.hero-card-caption{border-top:1px solid #b3caff60;padding-top:1.05rem}.hero-card-caption strong{display:block;font-size:1.08rem}.hero-card-caption p{font-size:.91rem;color:#d8e5ff}
+.strip{border-bottom:1px solid var(--line);background:#f4f8ff}.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;list-style:none;margin-block:0;padding:1rem 0;font-size:.91rem;font-weight:650;color:#283f66}.skills li{display:flex;align-items:center;gap:.65rem}.skills li::before{content:"";width:6px;height:6px;flex:none;background:#3c69ce;border-radius:50%}
+.section{padding-block:clamp(3.4rem,7vw,6rem)}.section-grid{display:grid;grid-template-columns:minmax(205px,.67fr) minmax(0,1.75fr);gap:clamp(2rem,6.5vw,6rem)}.section-intro p{color:var(--muted);max-width:32ch;margin-top:1rem}.experience-list{border-top:1px solid var(--line)}details{border-bottom:1px solid var(--line)}summary{cursor:pointer;list-style:none}summary::-webkit-details-marker{display:none}.role summary,.reference summary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1.25rem 0}.role summary:hover .role-title,.reference summary:hover .role-title{color:var(--blue)}.role-title{display:block;font-weight:720;font-size:clamp(1.13rem,2vw,1.4rem);line-height:1.24}.org{display:block;color:var(--blue);font-weight:650;margin-top:.27rem}.period{display:block;color:var(--muted);font-size:.88rem;margin-top:.2rem}.toggle{width:34px;height:34px;display:grid;place-items:center;border:1px solid #c9d9f3;border-radius:50%;color:var(--blue);font-size:1.2rem;line-height:1}.toggle::before{content:"+"}details[open] > summary .toggle::before{content:"−"}details[open] > summary .toggle{background:#e6efff}.role-body{padding:0 1.9rem 1.35rem 0;color:#354a64}.role-body ul{margin:.45rem 0 0;padding-left:1.3rem}.role-body li+li{margin-top:.48rem}.role-body li::marker{color:#4671cc}.role-body h3{font-size:1rem;margin-top:1.2rem;color:#233d66}.location{font-size:.93rem;color:var(--muted);margin-bottom:.6rem}
+.background{background:#f0f5ff;border-block:1px solid var(--line)}.education{border-bottom:1px solid var(--line);padding-bottom:1.4rem;margin-bottom:1.5rem}.education h3{font-size:1.35rem}.education p{color:var(--muted)}.reference{border-bottom:1px solid var(--line)}.reference dl{display:grid;grid-template-columns:auto 1fr;gap:.45rem 1.1rem;margin:0 0 1.4rem}.reference dt{font-weight:650}.reference dd{margin:0;color:var(--muted)}.references{display:grid;gap:.9rem;margin:0 0 1.4rem;padding:0;list-style:none}.references span{display:block;color:var(--muted)}
+.contact{background:#152f62;color:white}.contact-inner{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}.contact p{color:#d8e6ff;margin-top:.75rem}.contact .button{background:#f1f6ff;border-color:#f1f6ff;color:#193c7e}.contact .button:hover{background:#d8e6ff}.contact .contact-phone{color:#e2ecff;display:inline-block;margin-top:.55rem}.contact-options{display:grid;justify-items:start;gap:.3rem}.footer{padding-block:1.3rem}.footer .wrap{display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.88rem}
+@media(max-width:860px){.hero-grid{gap:2rem}.hero-card{min-height:285px}.section-grid{gap:2rem;grid-template-columns:minmax(175px,.65fr) minmax(0,1.55fr)}} 
+@media(max-width:680px){.wrap{width:calc(100% - 2rem)}.header-inner{flex-wrap:wrap;min-height:62px;gap:0}.brand{min-height:62px}.initials{width:34px;height:34px}.nav{width:100%;gap:.5rem 1.1rem;flex-wrap:wrap;padding:0 0 .8rem}.nav a{padding-block:.25rem}.nav .nav-contact{padding:.2rem .65rem}.js .nav-toggle{display:block;border:1px solid #9eb8eb;background:white;border-radius:99px;color:var(--navy);padding:.32rem .85rem;font:inherit;font-weight:650}.js .nav[data-open="false"]{display:none}.hero-grid,.section-grid,.contact-inner{grid-template-columns:1fr}.hero-grid{gap:2rem}.hero h1{font-size:clamp(3.1rem,13vw,4.5rem)}.hero-card{min-height:225px}.skills{grid-template-columns:repeat(2,1fr);gap:.55rem 1rem;font-size:.85rem}.section-intro p{max-width:50ch}.role-body{padding-right:0}.contact-inner{gap:1.35rem}}
+/* Keep feedback brief and use the same timing across controls. */
+:root {
+  --motion-fast: 160ms;
+  --motion-panel: 260ms;
+  --motion-ease: cubic-bezier(.2,.7,.3,1);
+}
+.nav a, .nav-toggle, .button, .role-title, .toggle {
+  transition: color var(--motion-fast), background-color var(--motion-fast),
+    border-color var(--motion-fast), transform var(--motion-fast) var(--motion-ease),
+    box-shadow var(--motion-fast);
+}
+.nav a:not(.nav-contact) {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: .38em;
+  transition: color var(--motion-fast), text-decoration-color var(--motion-fast);
+}
+.nav a:not(.nav-contact):is(:hover,[aria-current="location"]) {
+  color: var(--blue);
+  text-decoration-color: currentColor;
+}
+.nav .nav-contact:is(:hover,[aria-current="location"]),
+.nav-toggle[aria-expanded="true"] {
+  background: #e6efff;
+  border-color: #789be3;
+}
+@media (hover:hover) {
+  .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px #16397522;
+  }
+}
+.button:active { transform: translateY(0); }
+.button span { transition: transform var(--motion-fast) var(--motion-ease); }
+.button:hover span { transform: translate(.13rem,-.08rem); }
+.button.secondary:hover span { transform: translateY(.18rem); }
+summary:hover .toggle { border-color: #94afe1; }
+.toggle { position: relative; }
+.toggle::before, details[open] > summary .toggle::before, .toggle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 12px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.toggle::after {
+  transform: rotate(90deg);
+  transition: transform var(--motion-panel) var(--motion-ease);
+}
+details[open] > summary .toggle::after { transform: rotate(0deg); }
+
+@supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+  details { interpolate-size: allow-keywords; }
+  details::details-content {
+    height: 0;
+    overflow: clip;
+    opacity: 0;
+    transition: height var(--motion-panel) var(--motion-ease),
+      opacity var(--motion-fast), content-visibility var(--motion-panel) allow-discrete;
+  }
+  details[open]::details-content { height: auto; opacity: 1; }
+}
+@supports not ((interpolate-size: allow-keywords) and selector(details::details-content)) {
+  details[open] > :not(summary) { animation: show-details var(--motion-panel) var(--motion-ease); }
+  @keyframes show-details {
+    from { opacity: 0; transform: translateY(-.3rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@media (max-width:680px) {
+  .js .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: .6rem 1rem .9rem;
+    background: #fafcff;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 8px 16px #16397514;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--motion-fast), transform var(--motion-panel) var(--motion-ease),
+      visibility var(--motion-panel);
+  }
+  .js .nav[data-open="false"] {
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-.45rem);
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after, details::details-content {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+/* Make the action on every experience and background row explicit. */
+.experience-list {
+  display: grid;
+  align-content: start;
+  gap: .8rem;
+  border-top: 0;
+}
+.role, .reference {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  transition: border-color var(--motion-fast), box-shadow var(--motion-fast);
+}
+.role:hover, .reference:hover, details[open] {
+  border-color: #a7bdeb;
+}
+.role[open], .reference[open] {
+  box-shadow: 0 5px 18px #1639750c;
+}
+.role summary, .reference summary {
+  padding: 1rem 1.15rem;
+  border-radius: 15px;
+}
+summary:focus-visible { outline-offset: -4px; }
+.detail-action {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  justify-self: start;
+  padding: .38rem .44rem .38rem .76rem;
+  border: 1px solid #bed0f4;
+  border-radius: 99px;
+  background: #f0f5ff;
+  color: #173b88;
+  font-size: .84rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color var(--motion-fast), background-color var(--motion-fast),
+    border-color var(--motion-fast), transform var(--motion-fast) var(--motion-ease);
+}
+summary:is(:hover,:focus-visible) .detail-action {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+summary:active .detail-action { transform: scale(.97); }
+.detail-action .toggle {
+  width: 21px;
+  height: 21px;
+  color: inherit;
+  border-color: currentColor;
+  background: transparent;
+}
+details[open] > summary .detail-action .toggle { background: transparent; }
+.detail-action .toggle::before,
+details[open] > summary .detail-action .toggle::before,
+.detail-action .toggle::after { width: 8px; }
+.detail-action .when-open, details[open] .detail-action .when-closed { display: none; }
+details[open] .detail-action .when-open { display: inline; }
+.role-body, .reference dl, .reference .references {
+  margin: 0 1.15rem 1.15rem;
+  padding: .85rem 1rem;
+  border-left: 3px solid #94b1f0;
+  border-radius: 0 9px 9px 0;
+  background: #f3f7ff;
+}
+.reference + .reference { margin-top: .8rem; }
+.experience-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1.3rem;
+}
+.experience-actions [hidden] { display: none; }
+.experience-actions .button {
+  min-height: 40px;
+  font-size: .9rem;
+  background: var(--paper);
+}
+.experience-actions .button:hover { background: #e6efff; }
+@media(max-width:480px) {
+  .role summary, .reference summary { grid-template-columns: 1fr; gap: .65rem; }
+  .detail-action { min-height: 42px; }
+  .role-body, .reference dl, .reference .references {
+    margin-inline: .85rem;
+    padding-inline: .75rem;
+  }
+  .reference dl { grid-template-columns: 1fr; gap: .15rem; }
+  .reference dd + dt { margin-top: .5rem; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header" id="top">
+  <div class="wrap header-inner">
+    <a class="brand" href="#main"><span class="initials" aria-hidden="true">AJ</span> Angelica M. Junio</a>
+    <button class="nav-toggle" type="button" aria-controls="navigation" aria-expanded="false">Menu</button>
+    <nav class="nav" id="navigation" aria-label="Main navigation" data-open="false">
+      <a href="#experience">Experience</a><a href="#additional">Additional work</a><a href="#education">Education</a><a class="nav-contact" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Angelica M. Junio</p>
+        <h1 id="hero-title">Virtual Medical Receptionist</h1>
+        <p class="hero-copy">I support medical practices with administrative work, billing, invoicing, and reporting. My background also includes remote accounts support and technical helpdesk work.</p>
+        <div class="actions">
+          <a class="button primary" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+          <a class="button secondary" href="#experience">Explore my experience <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="monogram" aria-hidden="true">AJ</div>
+        <div class="hero-card-caption"><strong>Angelica M. Junio</strong><p>Mabalacat, Pampanga, Philippines</p></div>
+      </div>
+    </div>
+  </section>
+  <div class="strip">
+    <ul class="wrap skills" aria-label="Areas of experience">
+      <li>Medical administration</li><li>Billing and invoicing</li><li>Reporting</li><li>Technical support</li>
+    </ul>
+  </div>
+  <section class="section wrap section-grid" id="experience" aria-labelledby="experience-title">
+    <div class="section-intro">
+      <h2 id="experience-title">Work experience</h2>
+      <p>Medical practice administration, accounts support, and technical helpdesk work.</p>
+      <div class="experience-actions">
+        <button class="button secondary" type="button" data-expand-all aria-controls="work-roles" hidden>Expand all roles</button>
+      </div>
+    </div>
+    <div class="experience-list" id="work-roles">
+      <details class="role" open>
+        <summary><span><span class="role-title">Virtual Medical Receptionist</span><span class="org">Everest Practice Management</span><span class="period">February 2026 – October 2026</span></span><span class="detail-action"><span class="when-closed">View details</span><span class="when-open">Hide details</span><span class="toggle" aria-hidden="true"></span></span></summary>
+        <div class="role-body"><ul><li>Handled administrative tasks, managed billing and invoicing, and prepared and sent reports.</li></ul></div>
+      </details>
+      <details class="role">
+        <summary><span><span class="role-title">Accounts Assistant</span><span class="org">REMCO BPO</span><span class="period">September 15, 2025 – November 7, 2025</span></span><span class="detail-action"><span class="when-closed">View details</span><span class="when-open">Hide details</span><span class="toggle" aria-hidden="true"></span></span></summary>
+        <div class="role-body"><p class="location">2/F, W. Long Bldg., Sto. Cristo, Angeles City</p><ul><li>Intercompany transfer from Victoria Tower Medical.</li></ul></div>
+      </details>
+      <details class="role">
+        <summary><span><span class="role-title">Accounts Assistant (Remote)</span><span class="org">Victoria Tower Medical</span><span class="period">August 27, 2021 – September 14, 2025</span></span><span class="detail-action"><span class="when-closed">View details</span><span class="when-open">Hide details</span><span class="toggle" aria-hidden="true"></span></span></summary>
+        <div class="role-body">
+          <p class="location">Suite 3, 36–38 Victoria Street, Burwood, New South Wales 2134</p>
+          <ul>
+            <li>Oversaw billing, tracked unpaid invoices, and ensured claims included the required details from GPs and allied health providers.</li>
+            <li>Applied remittance payments received via Tyro and email, including patient-funded and workers’ compensation payments, and updated invoices in Best Practice Premier.</li>
+            <li>Worked with GPs, allied health providers, practice managers, and insurers to resolve billing discrepancies, confirm claims, and ensure accurate invoicing.</li>
+            <li>Answered billing questions from receptionists and the manager, and served as a point of contact for the team.</li>
+            <li>Entered financial data accurately, protected confidentiality, and corrected billing and claims errors.</li>
+            <li>Trained a junior billing assistant who transitioned into a full employee role.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="role">
+        <summary><span><span class="role-title">Tier 1 Helpdesk / Technical Support</span><span class="org">Datamatics – RJ Globus Inc.</span><span class="period">February 2020 – August 2021</span></span><span class="detail-action"><span class="when-closed">View details</span><span class="when-open">Hide details</span><span class="toggle" aria-hidden="true"></span></span></summary>
+        <div class="role-body">
+          <p class="location">Clark Center 07, Berthaphil Industrial Park, Jose Abad Santos Ave., Clark Freeport Zone</p>
+          <h3>Tier 1 helpdesk for test center administrators</h3>
+          <ul><li>Resolved issues related to certification and licensure exams.</li><li>Documented concerns and recurring issues for reference and analysis.</li><li>Assessed issues for escalation and supported administrative personnel under time-sensitive conditions.</li></ul>
+          <h3>Technical support for individual exam takers</h3>
+          <ul><li>Supported users of proprietary online exam software for courses and degree programs.</li><li>Guided users through downloading, installing, and configuring the software.</li><li>Explained software features and exam procedures, and provided patient support to users with varying levels of technical experience.</li></ul>
+          <h3>Point of contact for technical support representatives</h3>
+          <ul><li>Escalated unresolved or high-priority issues to the appropriate supervisors or departments.</li><li>Relayed updates, procedural changes, and client requests to the team.</li><li>Monitored queue performance and assisted with real-time management.</li><li>Supported agents with guidance and quick decisions when supervisors were unavailable.</li></ul>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section class="background" id="additional" aria-labelledby="additional-title">
+    <div class="section wrap section-grid">
+      <div><h2 id="additional-title">Additional experience</h2></div>
+      <div class="experience-list">
+        <details class="role" open>
+          <summary><span><span class="role-title">QA – Administrative Support Officer (Remote)</span><span class="org">AIBT (Australia Institute of Business &amp; Technology)</span><span class="period">January 2022 – February 2022</span></span><span class="detail-action"><span class="when-closed">View details</span><span class="when-open">Hide details</span><span class="toggle" aria-hidden="true"></span></span></summary>
+          <div class="role-body"><ul><li>Checked student status and submitted reports.</li><li>Handled tasks in Microsoft Word, Excel, and Moodle.</li><li>Completed other assignments for the team and management.</li></ul></div>
+        </details>
+        <details class="role" open>
+          <summary><span><span class="role-title">Freelance Canva Designer</span></span><span class="detail-action"><span class="when-closed">View details</span><span class="when-open">Hide details</span><span class="toggle" aria-hidden="true"></span></span></summary>
+          <div class="role-body"><ul><li>Create promotional materials and product layouts for a small online venture.</li><li>Design materials for social media publishing.</li></ul></div>
+        </details>
+      </div>
+    </div>
+  </section>
+  <section class="section wrap section-grid" id="education" aria-labelledby="education-title">
+    <div><h2 id="education-title">Education</h2></div>
+    <div>
+      <div class="education"><h3>Tarlac State University</h3><p>AB Communication</p><p>2016–2019</p></div>
+    </div>
+  </section>
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="section wrap contact-inner">
+      <div><h2 id="contact-title">Let’s talk about your practice.</h2><p>Get in touch to discuss medical administration or billing support.</p></div>
+      <div class="contact-options">
+        <a class="button" href="mailto:junicaangelo@gmail.com">Email Angelica <span aria-hidden="true">↗</span></a>
+
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer"><div class="wrap"><span>Angelica M. Junio · Mabalacat, Pampanga</span><a href="#main">Back to top ↑</a></div></footer>
+<script>
+document.documentElement.classList.add('js');
+const menu = document.querySelector('.nav-toggle');
+const nav = document.querySelector('.nav');
+const navLinks = nav.querySelectorAll('a');
+
+function updateCurrentSection() {
+  for (const link of navLinks) {
+    if (link.hash === window.location.hash) {
+      link.setAttribute('aria-current', 'location');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  }
+}
+window.addEventListener('hashchange', updateCurrentSection);
+updateCurrentSection();
+function setMenu(open) {
+  menu.setAttribute('aria-expanded', String(open));
+  nav.dataset.open = String(open);
+}
+menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') === 'false'));
+nav.addEventListener('click', (event) => {
+  if (event.target.closest('a') && menu.getAttribute('aria-expanded') === 'true') {
+    const section = document.querySelector(event.target.closest('a').hash);
+    section.setAttribute('tabindex', '-1');
+    section.focus({preventScroll:true});
+    setMenu(false);
+  }
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    menu.focus();
+  }
+});
+const expandAll = document.querySelector('[data-expand-all]');
+const workRoles = Array.from(document.querySelectorAll('#work-roles > details'));
+const everyRoleIsOpen = () => workRoles.every((role) => role.open);
+
+function updateExpandAll() {
+  expandAll.textContent = everyRoleIsOpen() ? 'Collapse all roles' : 'Expand all roles';
+}
+
+expandAll.addEventListener('click', () => {
+  const open = !everyRoleIsOpen();
+  for (const role of workRoles) role.open = open;
+  updateExpandAll();
+});
+
+for (const role of workRoles) role.addEventListener('toggle', updateExpandAll);
+updateExpandAll();
+expandAll.hidden = false;
+</script>
+</body>
+</html>
+
+
+
