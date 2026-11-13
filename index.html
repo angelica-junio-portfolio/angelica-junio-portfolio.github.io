@@ -444,7 +444,13 @@ copyEmail.addEventListener('click', async () => {
 #selected-work .section-note { color:var(--muted); margin-top:.75rem; }
 @media(prefers-reduced-motion:no-preference) {
   .project-summary { transition:background-color 160ms ease; }
-  .enter-view { animation:section-in 430ms cubic-bezier(.2,.7,.3,1) both; }
+  .scroll-reveal { opacity:.18; }
+  .scroll-reveal.enter-view { animation:scroll-rise 560ms cubic-bezier(.2,.7,.3,1) both; }
+  .scroll-reveal:focus-within { opacity:1; animation:none; }
+  @keyframes scroll-rise {
+    from { opacity:.18; translate:0 24px; }
+    to { opacity:1; translate:0 0; }
+  }
   @keyframes section-in { from { opacity:.48; translate:0 9px; } to { opacity:1; translate:0 0; } }
 }
 </style>
@@ -531,8 +537,19 @@ copyEmail.addEventListener('click', async () => {
     for (const { target, isIntersecting } of entries) {
       target.classList.toggle('enter-view', isIntersecting);
     }
-  }, {rootMargin:'-20px 0px -30px 0px'});
-  document.querySelectorAll('main > section:not(.hero)').forEach((section) => observer.observe(section));
+  }, {rootMargin:'-38px 0px -38px 0px'});
+  const revealTargets = document.querySelectorAll([
+    '#experience .section-intro', '#experience .role',
+    '#additional h2', '#additional .role',
+    '#selected-work h2', '#selected-work .section-note', '#selected-work .project-card',
+    '#education h2', '#education .education', '#contact .contact-inner'
+  ].join(','));
+  for (const target of revealTargets) {
+    const rect = target.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) target.classList.add('enter-view');
+    target.classList.add('scroll-reveal');
+    observer.observe(target);
+  }
 })();
 </script>
 
