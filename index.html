@@ -399,6 +399,73 @@ copyEmail.addEventListener('click', async () => {
   }
 });
 </script>
+<style>
+#selected-work .project-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:.8rem; margin-top:1.4rem; }
+#selected-work .project-card { display:block; min-width:0; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:0 4px 14px #1639750b; }
+.project-summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1.2rem; color:var(--navy); font-weight:700; overflow-wrap:anywhere; }
+.project-summary:focus-visible { outline-offset:-5px; }
+.project-summary:is(:hover,:focus-visible) { background:#f0f5ff; }
+.project-summary .toggle { flex:none; }
+#selected-work .project-panel { padding:0 1.2rem 1.2rem; display:grid; gap:.9rem; }
+#selected-work .project-image { display:block; max-width:100%; width:auto; height:auto; max-height:32rem; margin-inline:auto; border-radius:10px; object-fit:contain; }
+#selected-work .project-body { display:grid; gap:.65rem; padding:0; }
+#selected-work .project-body p { color:var(--muted); white-space:pre-line; overflow-wrap:anywhere; }
+#selected-work .project-body a { justify-self:start; font-weight:700; }
+#selected-work .section-note { color:var(--muted); margin-top:.75rem; }
+@media(prefers-reduced-motion:no-preference) {
+  .project-summary { transition:background-color 160ms ease; }
+  .enter-view { animation:section-in 430ms cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes section-in { from { opacity:.48; translate:0 9px; } to { opacity:1; translate:0 0; } }
+}
+</style>
+<script>
+(() => {
+  let gallery = document.getElementById('selected-work');
+  if (!gallery) {
+    gallery = document.createElement('section');
+    gallery.id = 'selected-work';
+    gallery.className = 'section wrap';
+    gallery.setAttribute('aria-labelledby','selected-work-title');
+    gallery.innerHTML = '<h2 id="selected-work-title">Sample projects</h2><p class="section-note">Project samples will appear here as they’re added.</p>';
+    document.getElementById('education').before(gallery);
+  }
+  gallery.querySelector('h2').textContent = 'Sample projects';
+  const galleryLink = document.querySelector('.nav a[href="#selected-work"]');
+  if (galleryLink) galleryLink.textContent = 'Sample projects';
+  for (const card of gallery.querySelectorAll('article.project-card')) {
+    const heading = card.querySelector('h3');
+    if (!heading) continue;
+    const disclosure = document.createElement('details');
+    disclosure.className = 'project-card';
+    disclosure.name = 'sample-projects';
+    const summary = document.createElement('summary');
+    summary.className = 'project-summary';
+    const title = document.createElement('span');
+    title.textContent = heading.textContent;
+    const icon = document.createElement('span');
+    icon.className = 'toggle';
+    icon.setAttribute('aria-hidden','true');
+    summary.append(title, icon);
+    const panel = document.createElement('div');
+    panel.className = 'project-panel';
+    heading.remove();
+    panel.append(...card.children);
+    disclosure.append(summary, panel);
+    card.replaceWith(disclosure);
+  }
+  if (!('IntersectionObserver' in window) || !matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      observer.unobserve(entry.target);
+      if (!entry.target.contains(document.activeElement)) entry.target.classList.add('enter-view');
+    }
+  }, {rootMargin:'0px 0px -36px 0px'});
+  for (const section of document.querySelectorAll('main > section:not(.hero)')) {
+    if (section.getBoundingClientRect().top >= window.innerHeight) observer.observe(section);
+  }
+})();
+</script>
 </body>
 </html>
 
