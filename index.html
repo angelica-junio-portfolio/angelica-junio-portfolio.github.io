@@ -414,6 +414,8 @@ copyEmail.addEventListener('click', async () => {
 #selected-work .project-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,135px),1fr)); gap:.6rem; }
 #selected-work .photo-tile { display:block; min-width:0; padding:0; border:1px solid var(--line); border-radius:9px; background:#eef4ff; cursor:zoom-in; overflow:hidden; }
 #selected-work .photo-tile img { display:block; width:100%; height:auto; aspect-ratio:4/3; object-fit:contain; }
+.portrait-zoom { display:block; width:100%; padding:0; border:0; background:transparent; cursor:zoom-in; }
+.portrait-zoom:focus-visible { outline-offset:-4px; }
 #project-lightbox { width:min(94vw,880px); max-height:92vh; padding:1rem; border:0; border-radius:14px; color:var(--ink); }
 #project-lightbox::backdrop { background:#101c36cc; }
 #project-lightbox img { display:block; max-width:100%; max-height:75vh; margin:.75rem auto 0; object-fit:contain; }
@@ -496,17 +498,24 @@ copyEmail.addEventListener('click', async () => {
     full.alt = image.alt;
     dialog.showModal();
   }
+  const portrait = document.querySelector('.hero-card img.portfolio-photo');
+  if (portrait) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'portrait-zoom';
+    button.setAttribute('aria-label', 'Enlarge ' + portrait.alt);
+    portrait.before(button);
+    button.append(portrait);
+    button.addEventListener('click', () => showPhoto(portrait));
+  }
+
   if (!('IntersectionObserver' in window) || !matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
   const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      observer.unobserve(entry.target);
-      if (!entry.target.contains(document.activeElement)) entry.target.classList.add('enter-view');
+    for (const { target, isIntersecting } of entries) {
+      target.classList.toggle('enter-view', isIntersecting);
     }
-  }, {rootMargin:'0px 0px -36px 0px'});
-  for (const section of document.querySelectorAll('main > section:not(.hero)')) {
-    if (section.getBoundingClientRect().top >= window.innerHeight) observer.observe(section);
-  }
+  }, {rootMargin:'-20px 0px -30px 0px'});
+  document.querySelectorAll('main > section:not(.hero)').forEach((section) => observer.observe(section));
 })();
 </script>
 </body>
