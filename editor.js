@@ -43,6 +43,7 @@ function updateControls() {
   const ready = Boolean(page) && !publishing && !photoBusy;
   publish.disabled = !ready || !dirty;
   photo.disabled = !ready;
+  el('add-work').disabled = !ready;
   el('choose-photo').disabled = !ready;
   removePhoto.disabled = !ready;
   removePhoto.hidden = !page?.querySelector('.portfolio-photo');
@@ -61,6 +62,14 @@ function renderPreview() {
   const style = draft.createElement('style');
   style.textContent = previewStyles;
   draft.head.append(style);
+  for (const [index, card] of [...draft.querySelectorAll('.project-card')].entries()) {
+    const button = draft.createElement('button');
+    button.type = 'button';
+    button.className = 'edit-control';
+    button.dataset.project = index;
+    button.textContent = 'Edit project';
+    card.querySelector('.project-body').append(button);
+  }
   const targets = [...draft.querySelectorAll(editable)];
   for (const [index, target] of targets.entries()) {
     const marker = draft.createElement('span');
@@ -79,6 +88,11 @@ function renderPreview() {
 
 preview.addEventListener('load', () => {
   preview.contentDocument?.addEventListener('click', (event) => {
+    const project = event.target.closest('[data-project]');
+    if (project) {
+      if (!publishing) openProject(Number(project.dataset.project));
+      return;
+    }
     const button = event.target.closest('[data-field]');
     if (button) {
       event.preventDefault();
@@ -90,7 +104,7 @@ preview.addEventListener('load', () => {
       textValue.focus();
       return;
     }
-    if (event.target.closest('a[href^="mailto:"]')) event.preventDefault();
+    if (event.target.closest('a:not([href^="#"])')) event.preventDefault();
   }, true);
 });
 
@@ -166,7 +180,7 @@ async function request(options = {}) {
   const response = await fetch(endpoint + (options.method ? '' : '?ref=main'), {
     cache: 'no-store',
     ...options,
-    headers: {'Accept': 'application/vnd.github+json', ...options.headers}
+    headers: {'Accept': 'application/vnd.github.object+json', ...options.headers}
   });
   if (!response.ok) {
     const error = new Error('GitHub returned ' + response.status);
@@ -188,8 +202,10 @@ function encode(text) {
 async function load() {
   try {
     const current = await request();
-    const bytes = Uint8Array.from(atob(current.content.replace(/\s/g, '')), (character) => character.charCodeAt(0));
-    page = new DOMParser().parseFromString(new TextDecoder().decode(bytes), 'text/html');
+    const html = current.content
+      ? new TextDecoder().decode(Uint8Array.from(atob(current.content.replace(/\s/g, '')), (c) => c.charCodeAt(0)))
+      : await loadLargePage();
+    page = new DOMParser().parseFromString(html, 'text/html');
     if (!page.querySelector('#hero-title') || !page.querySelector('#work-roles')) throw new Error('Portfolio markup not found.');
     revision = current.sha;
     renderPreview();
@@ -259,4 +275,172 @@ window.addEventListener('beforeunload', (event) => {
   if (dirty) event.preventDefault();
 });
 
+const workDialog = el('work-dialog');
+const workForm = el('work-form');
+const projectImage = el('project-image');
+let projectIndex = null;
+
+const galleryStyles = `
+  .project-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:1.25rem; margin-top:1.6rem; }
+  .project-card { display:flex; flex-direction:column; overflow:hidden; border:1px solid var(--line); border-radius:16px; background:#fff; box-shadow:0 4px 14px #1639750b; }
+  .project-image { width:100%; aspect-ratio:4/3; object-fit:contain; background:#eef4ff; display:block; }
+  .project-body { display:grid; align-content:start; gap:.6rem; flex:1; padding:1rem 1.15rem 1.2rem; }
+  .project-body p { color:var(--muted); white-space:pre-line; overflow-wrap:anywhere; }
+  .project-body a { justify-self:start; font-weight:700; }
+  .project-body button { justify-self:start; }
+  @media(prefers-reduced-motion:no-preference) {
+    .project-card { transition:transform .18s ease,box-shadow .18s ease; }
+    .project-card:hover { transform:translateY(-3px); box-shadow:0 9px 24px #1639751c; }
+  }
+`;
+
+function openProject(index = null) {
+  projectIndex = index;
+  const card = index === null ? null : page.querySelectorAll('.project-card')[index];
+  workForm.reset();
+  el('work-title').textContent = card ? 'Edit project' : 'Add a project';
+  el('project-name').value = card?.querySelector('h3')?.textContent || '';
+  el('project-description').value = card?.querySelector('p')?.textContent || '';
+  el('project-url').value = card?.querySelector('a')?.getAttribute('href') || '';
+  el('project-alt').value = card?.querySelector('img')?.getAttribute('alt') || '';
+  el('image-hint').textContent = card?.querySelector('img')
+    ? 'Leave blank to keep the existing image, or choose a replacement.'
+    : 'JPG, PNG, or WebP, up to 12 MB.';
+  el('work-status').textContent = '';
+  el('delete-work').hidden = !card;
+  workDialog.showModal();
+}
+
+function ensureGallery() {
+  let gallery = page.querySelector('#selected-work');
+  if (gallery) return gallery.querySelector('.project-grid');
+  gallery = page.createElement('section');
+  gallery.className = 'section wrap';
+  gallery.id = 'selected-work';
+  gallery.setAttribute('aria-labelledby', 'selected-work-title');
+  gallery.innerHTML = '<h2 id="selected-work-title">Selected work</h2><div class="project-grid"></div>';
+  page.querySelector('#education').before(gallery);
+  const link = page.createElement('a');
+  link.href = '#selected-work';
+  link.textContent = 'Selected work';
+  page.querySelector('.nav-contact').before(link);
+  if (!page.querySelector('#project-styles')) {
+    const style = page.createElement('style');
+    style.id = 'project-styles';
+    style.textContent = galleryStyles;
+    page.head.append(style);
+  }
+  return gallery.querySelector('.project-grid');
+}
+
+async function projectPhoto(file) {
+  if (!['image/jpeg','image/png','image/webp'].includes(file.type) || file.size > 12_000_000) {
+    throw new Error('Choose a JPG, PNG, or WebP image under 12 MB.');
+  }
+  const image = await createImageBitmap(file);
+  try {
+    const ratio = Math.min(1, 1000 / Math.max(image.width, image.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(image.width * ratio));
+    canvas.height = Math.max(1, Math.round(image.height * ratio));
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', .79);
+  } finally {
+    image.close();
+  }
+}
+
+function showGalleryPreview() {
+  preview.addEventListener('load', () => {
+    preview.contentDocument.querySelector('#selected-work')?.scrollIntoView();
+  }, {once: true});
+  renderPreview();
+  markChanged();
+  workDialog.close();
+}
+
+el('add-work').addEventListener('click', () => openProject());
+el('cancel-work').addEventListener('click', () => { if (!photoBusy) workDialog.close(); });
+workDialog.addEventListener('cancel', (event) => { if (photoBusy) event.preventDefault(); });
+el('delete-work').addEventListener('click', () => {
+  if (photoBusy) return;
+  page.querySelectorAll('.project-card')[projectIndex].remove();
+  if (!page.querySelector('.project-card')) {
+    page.querySelector('#selected-work').remove();
+    page.querySelector('.nav a[href="#selected-work"]').remove();
+  }
+  showGalleryPreview();
+});
+workForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  if (photoBusy) return;
+  const title = el('project-name').value.trim();
+  const description = el('project-description').value.trim();
+  const url = el('project-url').value.trim();
+  if (!title || (url && !/^https?:\/\//i.test(url))) {
+    el('work-status').textContent = 'Enter a project title and, if adding a link, use https:// or http://.';
+    return;
+  }
+  const old = projectIndex === null ? null : page.querySelectorAll('.project-card')[projectIndex];
+  photoBusy = true;
+  updateControls();
+  el('save-work').disabled = true;
+  el('work-status').textContent = '';
+  try {
+    const file = projectImage.files[0];
+    const image = file ? await projectPhoto(file) : old?.querySelector('img')?.getAttribute('src');
+    const card = page.createElement('article');
+    card.className = 'project-card';
+    const body = page.createElement('div');
+    body.className = 'project-body';
+    if (image) {
+      const element = page.createElement('img');
+      element.className = 'project-image';
+      element.alt = el('project-alt').value.trim() || title;
+      element.loading = 'lazy';
+      element.src = image;
+      card.append(element);
+    }
+    const heading = page.createElement('h3');
+    heading.textContent = title;
+    body.append(heading);
+    if (description) {
+      const text = page.createElement('p');
+      text.textContent = description;
+      body.append(text);
+    }
+    if (url) {
+      const link = page.createElement('a');
+      link.href = url;
+      link.textContent = 'View project ↗';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      body.append(link);
+    }
+    card.append(body);
+    if (old) old.replaceWith(card);
+    else ensureGallery().append(card);
+    showGalleryPreview();
+  } catch (error) {
+    el('work-status').textContent = error instanceof DOMException
+      ? 'That image could not be opened. Try a different file.'
+      : error.message;
+  } finally {
+    photoBusy = false;
+    el('save-work').disabled = false;
+    updateControls();
+  }
+});
+async function loadLargePage() {
+  const response = await fetch(endpoint + '?ref=main', {
+    cache: 'no-store',
+    headers: {'Accept': 'application/vnd.github.raw+json'}
+  });
+  if (!response.ok) throw new Error('Portfolio could not be loaded.');
+  return response.text();
+}
 load();
+

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Portfolio editor | Angelica M. Junio</title>
-<link rel="stylesheet" href="editor.css">
-<script src="editor.js" defer></script>
+<link rel="stylesheet" href="editor.css?v=2">
+<script src="editor.js?v=2" defer></script>
 </head>
 <body>
 <header>
@@ -15,17 +15,40 @@
 </header>
 <main>
   <section class="toolbar" aria-label="Publishing controls">
-    <div><h1>Edit your portfolio</h1><p>Choose <strong>Edit</strong> beside any text in the preview, or replace the profile photo.</p></div>
+    <div><h1>Edit your portfolio</h1><p>Choose <strong>Edit</strong> beside any text in the preview, replace the profile photo, or add projects to Selected Work.</p></div>
     <div class="actions">
       <button id="choose-photo" class="button secondary" disabled>Choose photo</button>
       <input id="photo" type="file" accept="image/jpeg,image/png,image/webp" hidden disabled>
       <button id="remove-photo" class="button secondary" hidden>Remove photo</button>
+      <button id="add-work" class="button secondary" disabled>Add a project</button>
       <button id="publish" class="button" disabled>Publish updates</button>
     </div>
     <p id="status" role="status">Loading the portfolio…</p>
   </section>
   <iframe id="preview" title="Editable portfolio preview" sandbox="allow-same-origin"></iframe>
 </main>
+<dialog id="work-dialog">
+  <form id="work-form">
+    <h2 id="work-title">Add a project</h2>
+    <label for="project-name">Project title</label>
+    <input id="project-name" required maxlength="100">
+    <label for="project-description">Description</label>
+    <textarea id="project-description" rows="3" maxlength="650"></textarea>
+    <label for="project-url">Project link (optional)</label>
+    <input id="project-url" type="url" placeholder="https://">
+    <label for="project-image">Graphic or photo (optional)</label>
+    <input id="project-image" type="file" accept="image/jpeg,image/png,image/webp">
+    <p id="image-hint" class="hint">JPG, PNG, or WebP, up to 12 MB.</p>
+    <label for="project-alt">Describe the image for visitors using a screen reader</label>
+    <input id="project-alt" maxlength="160">
+    <p id="work-status" class="hint" role="status"></p>
+    <div class="actions">
+      <button id="delete-work" class="button secondary" type="button" hidden>Remove project</button>
+      <button id="cancel-work" class="button secondary" type="button">Cancel</button>
+      <button id="save-work" class="button" type="submit">Save to preview</button>
+    </div>
+  </form>
+</dialog>
 <dialog id="text-editor">
   <form id="edit-text">
     <h2>Edit text</h2>
@@ -53,4 +76,5 @@
 </dialog>
 </body>
 </html>
+
 

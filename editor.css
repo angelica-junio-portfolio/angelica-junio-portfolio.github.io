@@ -27,3 +27,5 @@ dialog .actions { justify-content: flex-end; margin-top: 1rem; }
 #auth-status { color: #8b251e; }
 @media(max-width:760px) { .toolbar { grid-template-columns: 1fr; } }
 textarea { width: 100%; padding: .6rem; border: 1px solid #9eb8eb; border-radius: 8px; resize: vertical; font: inherit; }
+#work-dialog { max-height: calc(100dvh - 2rem); }
+#work-status { margin-top: .5rem; color: #8b251e; }
